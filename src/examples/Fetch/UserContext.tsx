@@ -1,4 +1,10 @@
-import { Dispatch, createContext, useEffect, useReducer } from 'react';
+import {
+  Dispatch,
+  createContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 import produce from 'immer';
 import { SET_USERS, ADD_USER, UPDATE_USER, usersApi } from './constants';
 import type { usersState, actions } from './types';
@@ -32,6 +38,7 @@ const usersReducer = produce((draft: usersState, action: actions) => {
 
 export const UsersProvider = ({ children }: UsersProviderProps) => {
   const [users, dispatch] = useReducer(usersReducer, null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // on init, fetch users
   useEffect(() => {
@@ -41,6 +48,8 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
       if (res.ok) {
         const payload = await res.json();
         if (!isCancelled) dispatch({ type: SET_USERS, payload });
+      } else {
+        setErrorMessage(`borked status ${res.status}`);
       }
     };
     fetchUsers();
@@ -52,6 +61,7 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
   return (
     <UsersContext.Provider value={users}>
       <UsersDispatchContext.Provider value={dispatch}>
+        {errorMessage}
         {children}
       </UsersDispatchContext.Provider>
     </UsersContext.Provider>

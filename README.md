@@ -10,7 +10,7 @@ Testing components involving dates.
 
 ### Fetch
 
-Testing without mocking fetch. Includes hook testing and a mocked server
+Testing without mocking fetch, including error handling. Includes hook testing and a mocked server
 
 ### MinimalApi
 
