@@ -11,7 +11,7 @@ const Home = () => <div>You are home</div>;
 const User = () => {
   const {
     params: { id },
-  } = useRouteMatch();
+  } = useRouteMatch<{ id: string }>();
 
   return <div>User page {id}</div>;
 };

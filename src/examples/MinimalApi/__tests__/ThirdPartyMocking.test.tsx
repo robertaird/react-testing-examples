@@ -2,6 +2,7 @@ import { SomeComp } from '../SomeComp';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 
+// A more contrived implementation than ./SomeComp.test.tsx
 const MockSvg = jest.fn();
 jest.mock('../thirdPartyDependency', () => {
   return {

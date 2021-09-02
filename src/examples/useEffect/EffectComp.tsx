@@ -14,11 +14,15 @@ export const EffectComp = () => {
   }, []);
 
   useEffect(() => {
+    let cancel = false;
     if (count === 1) {
       setTimeout(() => {
-        setCount(2);
+        if (!cancel) setCount(2);
       }, 250);
     }
+    return () => {
+      cancel = true;
+    };
   }, [count]);
   return <div>Current number is {count}</div>;
 };

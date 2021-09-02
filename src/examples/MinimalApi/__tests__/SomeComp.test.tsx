@@ -1,12 +1,24 @@
 import { SomeComp } from '../SomeComp';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
+import { Svg } from '../thirdPartyDependency/Svg';
+
+// mocking the Svg dependency directly
+jest.mock('../thirdPartyDependency/Svg');
+
+const MockSvg = Svg as jest.MockedFunction<typeof Svg>;
 
 describe('SomeComp', () => {
+  beforeEach(() => {
+    MockSvg.mockImplementation(() => <div />);
+  });
+
   test('renders color prop', () => {
     render(<SomeComp />);
-    const el = screen.getByText(/Current color: blue/i);
-    expect(el).toBeInTheDocument();
+    expect(Svg).toBeCalledWith(
+      expect.objectContaining({ color: 'blue' }),
+      expect.anything(),
+    );
   });
 
   test('switches from blue to green', () => {
@@ -16,7 +28,9 @@ describe('SomeComp', () => {
 
     userEvent.click(button);
 
-    const el = screen.getByText(/Current color: green/i);
-    expect(el).toBeInTheDocument();
+    expect(Svg).toBeCalledWith(
+      expect.objectContaining({ color: 'green' }),
+      expect.anything(),
+    );
   });
 });
